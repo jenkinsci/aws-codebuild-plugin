@@ -17,7 +17,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>2.9</version>
+        <version>3.5</version>
     </parent>
 
     <groupId>com.amazonaws</groupId>
@@ -26,10 +26,11 @@
     <packaging>hpi</packaging>
     <name>AWS CodeBuild Plugin</name>
     <description>Adds a build step to integrate Jenkins with AWS CodeBuild.</description>
-    <url>https://wiki.jenkins-ci.org/display/JENKINS/AWS+CodeBuild+Plugin</url>
+    <url>https://wiki.jenkins.io/display/JENKINS/AWS+CodeBuild+Plugin</url>
 
     <properties>
         <jenkins.version>1.642.3</jenkins.version>
+        <java.level>7</java.level>
     </properties>
 
     <developers>
@@ -60,14 +61,14 @@
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
+            <url>https://repo.jenkins-ci.org/public/</url>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
+            <url>https://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -84,7 +85,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.0.5</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -111,9 +112,9 @@
 
         <plugins>
             <plugin>
+                <!-- TODO: merge with Parent POM? -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.1</version>
                 <configuration>
                     <excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
                     <effort>Max</effort>
@@ -131,20 +132,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.7.201606060606</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.2</version>
             </plugin>
         </plugins>
     </build>
@@ -211,7 +198,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -219,6 +206,11 @@
             <artifactId>mockito-core</artifactId>
             <version>2.0.42-beta</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>2.4</version>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
