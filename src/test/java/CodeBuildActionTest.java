@@ -16,9 +16,15 @@
 
 import com.amazonaws.services.codebuild.model.BuildPhase;
 import hudson.model.AbstractBuild;
+import hudson.model.FreeStyleBuild;
+import hudson.model.FreeStyleProject;
 import hudson.model.Run;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.Issue;
+import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.WithoutJenkins;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,12 +37,16 @@ public class CodeBuildActionTest {
     private Run<?, ?> build = mock(AbstractBuild.class);
     CodeBuildAction action;
 
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
+
     @Before
     public void SetUp() {
         action = new CodeBuildAction(build);
     }
 
     @Test
+    @WithoutJenkins
     public void testFormatPhaseHistoryOneTransition() {
         List<BuildPhase> l = new ArrayList<BuildPhase>();
         l.add(new BuildPhase().withPhaseType("p")
@@ -51,6 +61,7 @@ public class CodeBuildActionTest {
     }
 
     @Test
+    @WithoutJenkins
     public void testFormatPhaseHistoryMultipleTransition() {
         List<BuildPhase> l = new ArrayList<BuildPhase>();
         l.add(new BuildPhase().withPhaseType("p").withPhaseStatus("s")
@@ -70,6 +81,7 @@ public class CodeBuildActionTest {
     }
 
     @Test
+    @WithoutJenkins
     public void testFormatPhaseHistoryFinalTransition() {
         List<BuildPhase> l = new ArrayList<BuildPhase>();
         l.add(new BuildPhase().withPhaseType("p").withPhaseStatus("s")
@@ -91,5 +103,24 @@ public class CodeBuildActionTest {
         assert(r.get(2).getPhaseType().equals("COMPLETED"));
         assert(r.get(2).getPhaseStatus().equals("SUCCEEDED"));
         assert(r.get(2).getDurationInSeconds().equals(0L));
+    }
+
+    /**
+     * Ensures that the action with build phases can be serialized to the disk.
+     */
+    @Test
+    @Issue("JENKINS-50264")
+    public void shouldBeAbleToPersistTheAction() throws Exception {
+        FreeStyleProject p = j.createFreeStyleProject();
+        FreeStyleBuild build = j.buildAndAssertSuccess(p);
+
+        List<BuildPhase> l = new ArrayList<BuildPhase>();
+        l.add(new BuildPhase().withPhaseType("p").withPhaseStatus("s")
+                .withStartTime(new Date(0)).withDurationInSeconds(2L));
+        CodeBuildAction a = new CodeBuildAction(build);
+        a.setPhases(l);
+
+        build.addAction(a);
+        build.save();
     }
 }
