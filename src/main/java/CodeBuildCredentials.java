@@ -60,6 +60,7 @@ public class CodeBuildCredentials extends BaseStandardCredentials implements AWS
     private static final int ERROR_MESSAGE_MAX_LENGTH = 178;
 
     @Getter @Setter private final String accessKey;
+    @Getter @Setter private final String sessionToken;
     @Getter @Setter private final String secretKey;
     @Getter @Setter private final String proxyHost;
     @Getter @Setter private final String proxyPort;
@@ -67,11 +68,12 @@ public class CodeBuildCredentials extends BaseStandardCredentials implements AWS
     @Getter @Setter private final String externalId;
 
     @DataBoundConstructor
-    public CodeBuildCredentials(CredentialsScope scope, String id, String description, String accessKey, String secretKey,
+    public CodeBuildCredentials(CredentialsScope scope, String id, String description, String accessKey, String secretKey, String sessionToken,
                                 String proxyHost, String proxyPort, String iamRoleArn, String externalId) {
         super(scope, id, description);
         this.accessKey = Validation.sanitize(accessKey);
         this.secretKey = Validation.sanitize(secretKey);
+        this.sessionToken = Validation.sanitize(sessionToken);
         this.proxyHost = proxyHost;
         this.proxyPort = proxyPort;
         this.iamRoleArn = Validation.sanitize(iamRoleArn);
@@ -92,7 +94,7 @@ public class CodeBuildCredentials extends BaseStandardCredentials implements AWS
 
     @Override
     public AWSCredentials getCredentials() {
-        AWSCredentialsProvider credentialsProvider = AWSClientFactory.getBasicCredentialsOrDefaultChain(accessKey, secretKey);
+        AWSCredentialsProvider credentialsProvider = AWSClientFactory.getBasicCredentialsOrDefaultChain(accessKey, secretKey, sessionToken);
         AWSCredentials initialCredentials = credentialsProvider.getCredentials();
 
         if (iamRoleArn.isEmpty()) {
@@ -131,7 +133,7 @@ public class CodeBuildCredentials extends BaseStandardCredentials implements AWS
                                                @QueryParameter("secretKey") final String secretKey) {
 
             try {
-                AWSCredentials initialCredentials = AWSClientFactory.getBasicCredentialsOrDefaultChain(accessKey, secretKey).getCredentials();
+                AWSCredentials initialCredentials = AWSClientFactory.getBasicCredentialsOrDefaultChain(accessKey, secretKey, "").getCredentials();
                 new AWSCodeBuildClient(initialCredentials, getClientConfiguration(proxyHost, proxyPort)).listProjects(new ListProjectsRequest());
 
             } catch (Exception e) {
