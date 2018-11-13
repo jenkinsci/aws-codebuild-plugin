@@ -13,8 +13,15 @@
   ~
   -->
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-  <!--
-    This Jelly script is used to produce the global configuration option.
-  -->
-
+  <f:section title="${%AWS CodeBuild plugin}">
+    <f:entry title="${%Minimum interval for polling in milliseconds}" field="minSleepTime">
+      <f:number clazz="positive-number" default="2500"/>
+    </f:entry>
+    <f:entry title="${%Maximum interval for polling in milliseconds}" field="maxSleepTime">
+      <f:number default="60000"/>
+    </f:entry>
+    <f:entry title="${%Jitter for polling in milliseconds}" field="sleepJitter">
+      <f:number clazz="positive-number" default="5000"/>
+    </f:entry>
+  </f:section>
 </j:jelly>

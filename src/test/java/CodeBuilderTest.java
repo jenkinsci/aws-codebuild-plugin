@@ -27,6 +27,8 @@ import hudson.model.TaskListener;
 import hudson.util.Secret;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.junit.Before;
+import org.junit.Rule;
+import org.jvnet.hudson.test.JenkinsRule;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -78,6 +80,9 @@ public class CodeBuilderTest {
 
     //mock console log
     protected ByteArrayOutputStream log;
+
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
 
     //creates a CodeBuilder with mock parameters that reflect a typical use case.
     protected CodeBuilder createDefaultCodeBuilder() {
