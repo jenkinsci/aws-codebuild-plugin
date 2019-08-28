@@ -181,7 +181,7 @@ public class CodeBuilder extends Builder implements SimpleBuildStep {
         this.serviceRoleOverride = Validation.sanitize(serviceRoleOverride);
         this.envVariables = Validation.sanitize(envVariables);
         this.envParameters = Validation.sanitize(envParameters);
-        this.buildSpecFile = Validation.sanitize(buildSpecFile);
+        this.buildSpecFile = decodeJSON(Validation.sanitize(buildSpecFile));
         this.buildTimeoutOverride = Validation.sanitize(buildTimeoutOverride);
         this.insecureSslOverride = Validation.sanitize(insecureSslOverride);
         this.privilegedModeOverride = Validation.sanitize(privilegedModeOverride);
@@ -234,7 +234,7 @@ public class CodeBuilder extends Builder implements SimpleBuildStep {
         serviceRoleOverride = Validation.sanitize(serviceRoleOverride);
         envVariables = Validation.sanitize(envVariables);
         envParameters = Validation.sanitize(envParameters);
-        buildSpecFile = Validation.sanitizeYAML(buildSpecFile);
+        buildSpecFile = decodeJSON(Validation.sanitize(buildSpecFile));
         buildTimeoutOverride = Validation.sanitize(buildTimeoutOverride);
         insecureSslOverride = Validation.sanitize(insecureSslOverride);
         privilegedModeOverride = Validation.sanitize(privilegedModeOverride);
