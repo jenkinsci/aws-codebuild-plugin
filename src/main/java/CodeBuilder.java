@@ -962,7 +962,7 @@ public class CodeBuilder extends Builder implements SimpleBuildStep {
     }
 
     public static String decodeJSON(String json) {
-        return json.replaceAll("&amp;quot;", "\"").replaceAll("&quot;", "\"").replaceAll("&amp;", "&").replaceAll("&gt;", ">").replaceAll("<","&lt;").replaceAll("''", "'");
+        return json.replaceAll("&amp;quot;", "\"").replaceAll("&quot;", "\"").replaceAll("&amp;", "&").replaceAll("&gt;", ">").replaceAll("&lt;","<").replaceAll("''", "'");
     }
 
     // Overridden for better type safety.
