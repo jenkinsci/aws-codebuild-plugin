@@ -218,16 +218,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.9.10</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.9.10</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-cbor</artifactId>
-            <version>2.9.10</version>
-        </dependency> -->
         <dependency>
             <groupId>com.amazon.ion</groupId>
             <artifactId>ion-java</artifactId>
