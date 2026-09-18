@@ -1,2 +1,10 @@
 #!/usr/bin/env groovy
-buildPlugin(platforms: ['linux'], jdkVersions: [8], jenkinsVersions: [null, "2.107.1"])
+
+buildPlugin(
+  useContainerAgent: true,
+  forkCount: '1C',
+  configurations: [
+    [platform: 'linux', jdk: 17],
+    [platform: 'linux', jdk: 21],
+  ]
+)
