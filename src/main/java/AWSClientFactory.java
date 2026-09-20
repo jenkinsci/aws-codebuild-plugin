@@ -99,6 +99,9 @@ public class AWSClientFactory {
                        String region, Run<?, ?> build, StepContext stepContext) {
 
         this.awsAccessKey = sanitize(awsAccessKey);
+        if(awsSecretKey == null && this.awsAccessKey.isEmpty()) {
+            awsSecretKey = Secret.fromString("");
+        }
         this.awsSecretKey = awsSecretKey;
         this.awsSessionToken = sanitize(awsSessionToken);
         this.region = sanitize(region);
