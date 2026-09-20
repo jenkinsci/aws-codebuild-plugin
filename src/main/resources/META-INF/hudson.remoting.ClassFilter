@@ -1,2 +1,4 @@
-com.amazonaws.services.codebuild.model.BuildPhase
-com.amazonaws.services.codebuild.model.PhaseContext
+software.amazon.awssdk.services.codebuild.model.BuildPhase
+software.amazon.awssdk.services.codebuild.model.PhaseContext
+software.amazon.awssdk.core.util.DefaultSdkAutoConstructList
+java.time.Instant

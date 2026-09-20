@@ -15,6 +15,7 @@
  */
 
 import software.amazon.awssdk.services.codebuild.model.BuildPhase;
+import software.amazon.awssdk.services.codebuild.model.PhaseContext;
 import hudson.model.AbstractBuild;
 import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
@@ -106,7 +107,8 @@ public class CodeBuildActionTest {
     }
 
     /**
-     * Ensures that the action with build phases can be serialized to the disk.
+     * Ensures the action's build phases survive persistence to build.xml and
+     * reload, which is what happens across a controller restart.
      */
     @Test
     @Issue("JENKINS-50264")
@@ -117,10 +119,25 @@ public class CodeBuildActionTest {
         List<BuildPhase> l = new ArrayList<BuildPhase>();
         l.add(BuildPhase.builder().phaseType("p").phaseStatus("s")
                 .startTime(Instant.ofEpochMilli(0)).durationInSeconds(2L).build());
+        l.add(BuildPhase.builder().phaseType("e").phaseStatus("FAILED")
+                .startTime(Instant.ofEpochMilli(2)).durationInSeconds(1L)
+                .contexts(PhaseContext.builder().statusCode("c").message("m").build())
+                .build());
         CodeBuildAction a = new CodeBuildAction(build);
+        a.setBuildId("proj:11111111-2222-3333-4444-555555555555");
         a.setPhases(l);
 
         build.addAction(a);
         build.save();
+        build.reload();
+
+        CodeBuildAction reloaded = build.getAction(CodeBuildAction.class);
+        assert(reloaded != null);
+        List<BuildPhase> phases = reloaded.getPhases();
+        assert(phases != null);
+        assert(phases.size() == 2);
+        assert(phases.get(0).phaseTypeAsString().equals("p"));
+        assert(phases.get(0).phaseStatusAsString().equals("s"));
+        assert(phases.get(1).contexts().get(0).message().equals("m"));
     }
 }
