@@ -106,6 +106,19 @@ public class CodeBuildActionTest {
         assert(r.get(2).durationInSeconds().equals(0L));
     }
 
+    @Test
+    @WithoutJenkins
+    public void testPhaseErrorMessageWithNullContextMessage() {
+        List<BuildPhase> l = new ArrayList<BuildPhase>();
+        l.add(BuildPhase.builder().phaseType("BUILD").phaseStatus("FAILED")
+                .contexts(PhaseContext.builder().statusCode("SOME_ERROR").build())
+                .build());
+        action.setPhases(l);
+        String m = action.getPhaseErrorMessage();
+        assert(m != null);
+        assert(m.contains("SOME_ERROR"));
+    }
+
     /**
      * Ensures the action's build phases survive persistence to build.xml and
      * reload, which is what happens across a controller restart.

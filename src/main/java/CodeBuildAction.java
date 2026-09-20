@@ -129,7 +129,11 @@ public class CodeBuildAction implements Action {
             return "";
         } else {
             if (!errorPhase.contexts().isEmpty()) {
-                return errorPhase.contexts().get(0).message().replace("'", "").replace("\n", "") + " (status code: " +
+                String message = errorPhase.contexts().get(0).message();
+                if(message == null) {
+                    message = "";
+                }
+                return message.replace("'", "").replace("\n", "") + " (status code: " +
                         errorPhase.contexts().get(0).statusCode() + ")";
             } else {
                 return "";
