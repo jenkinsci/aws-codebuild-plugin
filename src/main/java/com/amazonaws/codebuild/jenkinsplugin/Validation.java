@@ -51,6 +51,20 @@ public class Validation {
         }
     }
 
+    // Fields rendered as True/False selects (enums.BooleanValue) only match
+    // capitalized options. Normalize 'true'/'false' written via the API or
+    // pipeline snippets so a form save cannot silently flip the value.
+    public static String sanitizeBooleanSelect(final String s) {
+        String v = sanitize(s);
+        if(v.equalsIgnoreCase("true")) {
+            return "True";
+        }
+        if(v.equalsIgnoreCase("false")) {
+            return "False";
+        }
+        return v;
+    }
+
     public static String sanitizeYAML(final String s) {
         if(s == null) {
             return "";

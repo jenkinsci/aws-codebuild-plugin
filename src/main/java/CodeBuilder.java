@@ -165,7 +165,7 @@ public class CodeBuilder extends Builder implements SimpleBuildStep {
         this.sourceVersion = sanitize(sourceVersion);
         this.sseAlgorithm = sanitize(sseAlgorithm);
         this.gitCloneDepthOverride = sanitize(gitCloneDepthOverride);
-        this.reportBuildStatusOverride = sanitize(reportBuildStatusOverride);
+        this.reportBuildStatusOverride = sanitizeBooleanSelect(reportBuildStatusOverride);
         this.secondarySourcesOverride = decodeJSON(sanitize(secondarySourcesOverride));
         this.secondarySourcesVersionOverride = decodeJSON(sanitize(secondarySourcesVersionOverride));
         this.artifactTypeOverride = sanitize(artifactTypeOverride);
@@ -174,8 +174,8 @@ public class CodeBuilder extends Builder implements SimpleBuildStep {
         this.artifactNamespaceOverride = sanitize(artifactNamespaceOverride);
         this.artifactPackagingOverride = sanitize(artifactPackagingOverride);
         this.artifactPathOverride = sanitize(artifactPathOverride);
-        this.artifactEncryptionDisabledOverride = sanitize(artifactEncryptionDisabledOverride);
-        this.overrideArtifactName = sanitize(overrideArtifactName);
+        this.artifactEncryptionDisabledOverride = sanitizeBooleanSelect(artifactEncryptionDisabledOverride);
+        this.overrideArtifactName = sanitizeBooleanSelect(overrideArtifactName);
         this.secondaryArtifactsOverride = decodeJSON(sanitize(secondaryArtifactsOverride));
         this.sourceTypeOverride = sanitize(sourceTypeOverride);
         this.sourceLocationOverride = sanitize(sourceLocationOverride);
@@ -189,7 +189,7 @@ public class CodeBuilder extends Builder implements SimpleBuildStep {
         this.cloudWatchLogsGroupNameOverride = sanitize(cloudWatchLogsGroupNameOverride);
         this.cloudWatchLogsStreamNameOverride = sanitize(cloudWatchLogsStreamNameOverride);
         this.s3LogsStatusOverride = sanitize(s3LogsStatusOverride);
-        this.s3LogsEncryptionDisabledOverride = sanitize(s3LogsEncryptionDisabledOverride);
+        this.s3LogsEncryptionDisabledOverride = sanitizeBooleanSelect(s3LogsEncryptionDisabledOverride);
         this.s3LogsLocationOverride = sanitize(s3LogsLocationOverride);
         this.certificateOverride = sanitize(certificateOverride);
         this.serviceRoleOverride = sanitize(serviceRoleOverride);
@@ -197,9 +197,9 @@ public class CodeBuilder extends Builder implements SimpleBuildStep {
         this.envParameters = sanitize(envParameters);
         this.buildSpecFile = sanitizeYAML(buildSpecFile);
         this.buildTimeoutOverride = sanitize(buildTimeoutOverride);
-        this.insecureSslOverride = sanitize(insecureSslOverride);
-        this.privilegedModeOverride = sanitize(privilegedModeOverride);
-        this.cwlStreamingDisabled = sanitize(cwlStreamingDisabled);
+        this.insecureSslOverride = sanitizeBooleanSelect(insecureSslOverride);
+        this.privilegedModeOverride = sanitizeBooleanSelect(privilegedModeOverride);
+        this.cwlStreamingDisabled = sanitizeBooleanSelect(cwlStreamingDisabled);
         this.exceptionFailureMode = sanitize(exceptionFailureMode);
         this.downloadArtifacts = sanitize(downloadArtifacts);
         this.downloadArtifactsRelativePath = sanitize(downloadArtifactsRelativePath);

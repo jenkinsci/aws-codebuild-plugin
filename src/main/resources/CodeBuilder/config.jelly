@@ -44,6 +44,10 @@
         <f:password />
       </f:entry>
 
+      <f:entry title="AWS Session Token" field="awsSessionToken" help="/plugin/aws-codebuild/help-keyCredsHelp.html">
+        <f:password />
+      </f:entry>
+
     </f:radioBlock>
 
   </f:section>
