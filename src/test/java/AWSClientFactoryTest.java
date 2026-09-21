@@ -147,6 +147,22 @@ public class AWSClientFactoryTest {
 
 
     @Test
+    public void testNullSecretWithBlankAccessKeyUsesDefaultChain() {
+        AWSClientFactory awsClientFactory = new AWSClientFactory("keys", "", proxyHost, proxyPort, "", null, "", REGION, build, null);
+        assert(awsClientFactory.getProxyHost().equals(proxyHost));
+    }
+
+    @Test
+    public void testNullSecretWithAccessKeySetIsRejected() {
+        try {
+            new AWSClientFactory("keys", "", proxyHost, proxyPort, "a", null, "", REGION, build, null);
+            assert(false);
+        } catch (InvalidInputException e) {
+            assert(e.getMessage().contains(invalidSecretKeyError));
+        }
+    }
+
+    @Test
     public void testNullCredsId() {
         try {
             new AWSClientFactory("jenkins", null, "", "", "", null, "", REGION, build, null);

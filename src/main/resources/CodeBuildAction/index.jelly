@@ -103,10 +103,10 @@
                     </tr>
                     <j:forEach var="phase" items="${it.phases}">
                         <tr>
-                            <td>${phase.getPhaseType()}</td>
-                            <td>${phase.getPhaseStatus()}</td>
-                            <td>${phase.getStartTime()}</td>
-                            <td>${phase.getDurationInSeconds()} seconds</td>
+                            <td>${phase.phaseTypeAsString()}</td>
+                            <td>${phase.phaseStatusAsString()}</td>
+                            <td>${phase.startTime()}</td>
+                            <td>${phase.durationInSeconds()} seconds</td>
                         </tr>
                     </j:forEach>
                 </tbody>

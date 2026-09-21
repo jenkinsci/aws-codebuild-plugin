@@ -33,8 +33,7 @@ public class CodeBuildAction implements Action {
     private List<String> logs;
     private String cloudWatchLogsURL;
     private String s3LogsURL;
-    // transient: Jenkins' XStream class filter refuses SDK v2 types, so phases can't persist to build.xml
-    private transient List<BuildPhase> phases;
+    private List<BuildPhase> phases;
     private String phaseErrorMessage;
     private String startTime;
     private String currentPhase;
@@ -130,7 +129,11 @@ public class CodeBuildAction implements Action {
             return "";
         } else {
             if (!errorPhase.contexts().isEmpty()) {
-                return errorPhase.contexts().get(0).message().replace("'", "").replace("\n", "") + " (status code: " +
+                String message = errorPhase.contexts().get(0).message();
+                if(message == null) {
+                    message = "";
+                }
+                return message.replace("'", "").replace("\n", "") + " (status code: " +
                         errorPhase.contexts().get(0).statusCode() + ")";
             } else {
                 return "";
