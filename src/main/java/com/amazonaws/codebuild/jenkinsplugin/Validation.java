@@ -15,7 +15,6 @@
  */
 package com.amazonaws.codebuild.jenkinsplugin;
 
-import org.apache.commons.lang.StringUtils;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
@@ -23,9 +22,6 @@ import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.codebuild.model.InvalidInputException;
-
-import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
-import static org.apache.commons.lang.StringEscapeUtils.escapeSql;
 
 public class Validation {
 
@@ -41,6 +37,27 @@ public class Validation {
         } else {
             return escapeSql(escapeHtml(s.trim()));
         }
+    }
+
+    // Escapes the HTML metacharacters that matter for output safety.
+    // Replaces the former commons-lang StringEscapeUtils.escapeHtml, which
+    // Jenkins core stopped providing in 2.579; ampersand is escaped first so
+    // the entities it inserts are not double-escaped.
+    private static String escapeHtml(final String s) {
+        return s.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;");
+    }
+
+    // Doubles single quotes, matching the former commons-lang
+    // StringEscapeUtils.escapeSql.
+    private static String escapeSql(final String s) {
+        return s.replace("'", "''");
+    }
+
+    private static boolean isNotEmpty(final String s) {
+        return s != null && !s.isEmpty();
     }
 
     public static Integer parseInt(String s) {
@@ -79,10 +96,10 @@ public class Validation {
 
     public static AwsCredentialsProvider getBasicCredentialsOrDefaultChain(String accessKey, String secretKey, String awsSessionToken) {
         AwsCredentialsProvider result;
-        if (StringUtils.isNotEmpty(accessKey) && StringUtils.isNotEmpty(secretKey) && StringUtils.isNotEmpty(awsSessionToken)) {
+        if (isNotEmpty(accessKey) && isNotEmpty(secretKey) && isNotEmpty(awsSessionToken)) {
             result = StaticCredentialsProvider.create(AwsSessionCredentials.create(accessKey, secretKey, awsSessionToken));
         }
-        else if (StringUtils.isNotEmpty(accessKey) && StringUtils.isNotEmpty(secretKey)) {
+        else if (isNotEmpty(accessKey) && isNotEmpty(secretKey)) {
             result = StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey));
         } else {
             result = DefaultCredentialsProvider.create();
